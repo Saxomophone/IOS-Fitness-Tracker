@@ -1,21 +1,35 @@
-//
-//  ContentView.swift
-//  fitness tracker
-//
-//  Created by Ava Edwards on 10/7/2024.
-//
-
 import SwiftUI
 
+enum ActiveView {
+    case loading, login, signup, home, exercise // Added exercise case
+}
+
+class ViewManager: ObservableObject {
+    @Published var activeView: ActiveView = .loading
+}
+
 struct ContentView: View {
+    @StateObject var viewManager = ViewManager()
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        switch viewManager.activeView {
+        case .loading:
+            LoadingScreenView()
+                .environmentObject(viewManager)
+        case .login:
+            LoginPageView()
+                .environmentObject(viewManager)
+        case .signup:
+            SignupView()
+                .environmentObject(viewManager)
+        case .home:
+            HomeView()
+                .environmentObject(viewManager)
+        case .exercise: // Added case for exercise
+            ExerciseView()
+                .environmentObject(ExerciseViewManager()) // Initialize ExerciseViewManager here
+                .environmentObject(viewManager)
         }
-        .padding()
     }
 }
 

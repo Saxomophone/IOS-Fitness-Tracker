@@ -17,28 +17,33 @@ struct CircleSlider: View {
             
             ZStack {
                 Circle()
-                    .stroke(lineWidth: 10)
+                    .stroke(lineWidth: 20)
                     .foregroundColor(.gray.opacity(0.3))
                 
                 Circle()
                     .trim(from: 0, to: CGFloat(progress / total))
-                    .stroke(lineWidth: 10)
-                    .foregroundColor(.blue)
+                    .stroke(style: StrokeStyle(lineWidth: 20, lineCap: .round, lineJoin: .round))
+                    .foregroundColor(.mint)
                     .rotationEffect(.degrees(-90))
                 
                 Circle()
                     .frame(width: 20, height: 20)
-                    .foregroundColor(.blue)
+                    .foregroundColor(.mint)
                     .position(handlePoint)
                     .gesture(
                         DragGesture(minimumDistance: 0)
                             .onChanged { value in
                                 let vector = CGVector(dx: value.location.x - center.x, dy: value.location.y - center.y)
-                                let angle = atan2(vector.dy, vector.dx) + .pi / 2
-                                let fixedAngle = angle < 0 ? angle + 2 * .pi : angle
-                                progress = min(max(0, fixedAngle / (2 * .pi) * total), total)
+                                var angle = atan2(vector.dy, vector.dx) + .pi / 2
+                                if angle < 0 { angle += 2 * .pi }
+                                let newProgress = (angle / (2 * .pi)) * total
+                                progress = min(max(0, newProgress), total)
                             }
                     )
+                
+                Text("\(Int(progress))")
+                    .font(.system(size: 40, weight: .bold, design: .serif))
+                    .foregroundColor(.mint)
             }
             .frame(width: size, height: size)
         }

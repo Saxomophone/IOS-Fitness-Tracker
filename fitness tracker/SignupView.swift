@@ -1,18 +1,20 @@
-//
-//  SignupView.swift
-//  fitness tracker
-//
-//  Created by Ava Edwards on 11/7/2024.
-//
-
+// SignupView.swift
 import SwiftUI
 
 struct SignupView: View {
+    @EnvironmentObject var viewManager: ViewManager
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            Text("Signup")
+            Button("Go to Home") {
+                viewManager.activeView = .home
+            }
+        }
     }
 }
 
 #Preview {
     SignupView()
+        .environmentObject(ViewManager())
 }

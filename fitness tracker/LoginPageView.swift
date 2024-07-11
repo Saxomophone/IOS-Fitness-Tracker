@@ -24,22 +24,28 @@ struct LoginPageView: View {
                     .cornerRadius(5.0)
                     .padding(.bottom, 20)
                     .keyboardType(.emailAddress)
+                    .autocorrectionDisabled(true)
                     .autocapitalization(.none)
                 
                 ZStack(alignment: .trailing) {
-                    if isSecure {
-                        SecureField("Password", text: $password)
-                            .padding()
-                            .background(Color(.systemGray6))
-                            .cornerRadius(5.0)
-                            .padding(.bottom, 20)
-                    } else {
-                        TextField("Password", text: $password)
-                            .padding()
-                            .background(Color(.systemGray6))
-                            .cornerRadius(5.0)
-                            .padding(.bottom, 20)
+                    Group {
+                        if isSecure {
+                            SecureField("Password", text: $password)
+                                .padding(.trailing, 30)
+                                .autocorrectionDisabled(true)
+                                .autocapitalization(.none)
+                        } else {
+                            TextField("Password", text: $password)
+                                .padding(.trailing, 30)
+                                .autocorrectionDisabled(true)
+                                .autocapitalization(.none)
+                        }
                     }
+                    .padding()
+                    .background(Color(.systemGray6))
+                    .cornerRadius(5.0)
+                    .padding(.bottom, 20)
+                    .frame(maxWidth: .infinity)
                     
                     Button(action: {
                         isSecure.toggle()
@@ -47,6 +53,7 @@ struct LoginPageView: View {
                         Image(systemName: isSecure ? "eye" : "eye.slash")
                             .foregroundColor(.gray)
                             .padding([.bottom, .trailing])
+                            .frame(width: 44, height: 44) // Fixed size to avoid layout shift
                     }
                     .buttonStyle(PlainButtonStyle()) // Prevent fading to white when clicked
                 }
